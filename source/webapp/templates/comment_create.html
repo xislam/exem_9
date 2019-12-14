@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
-
-{% block title %}Create Comment{% endblock %}
-
+{% block title %}Добавить соментарии{% endblock %}
 {% block content %}
-    <h1>Create Comment</h1>
-    <form method="POST" action="">
-        {% include 'partial/form.html' with button_text="Create" %}
+    <h1 class="text-center">Создать коментарии</h1>
+    <form action="{% url "webapp:comment_add" %}" method="POST" enctype="multipart/form-data">
+        {% include 'partial/form.html' %}
+        <input type="submit" value="Создать" class="btn btn-primary">
     </form>
 {% endblock %}

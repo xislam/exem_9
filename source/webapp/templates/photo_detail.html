@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block menu %}
+    <li class="nav-item"><a href="{% url 'webapp:comment_add' %}" class="nav-link">Add Comment</a></li>
+{% endblock %}
 {% block title %}{{ photo.created }}{% endblock %}
 {% block content %}
     <div class="text-center">
@@ -18,17 +21,17 @@
     {% if is_paginated %}
         {% include 'partial/pagination.html' %}
     {% endif %}
-    {% for comment in comments %}
+    {% for comment in photo.comment_photo.all %}
         <div class="comment">
             <p>To photo: <a href="{% url 'webapp:photo_detail' comment.photo.id %}">{{ comment.photo }}</a></p>
-            <p>{{ comment.author }} commented at {{ comment.created_at|date:'d.m.Y H:i:s' }}</p>
-            <div class="pre">{{ comment.text }}</div>
-            {% if comment.photo.is_active %}
+            <p>{{ comment.created_by }} commented at {{ comment.date_ct|date:'d.m.Y H:i:s' }}</p>
+
+            <div class="pre">
+                <p>{{ comment.text }}</p>
+            </div>
                 <p class="comment-links">
-                    <a href="{% url 'webapp:comment_update' comment.pk %}">Edit</a>
                     <a href="{% url 'webapp:comment_delete' comment.pk %}">Delete</a>
                 </p>
-            {% endif %}
         </div>
     {% empty %}
         <p>No comments yet.</p>
