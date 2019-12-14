@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Галерея{% endblock %}
+{% block menu %}
+    <li class="nav-item"><a href="{% url 'webapp:photo_create' %}" class="nav-link">Добавить фото</a></li>
+{% endblock %}
+{% block content %}
+    <h1 class="text-center">Галерея</h1>
+    <div class="row">
+        {% for photo in photo_list %}
+            <div class="col col-3">
+                <div class="card">
+                    <img src="{{ photo.img.url }}" class="card-img-top">
+                    <div class="card-body">
+                        <p class="card-text">Подпись:{{ photo.subscription }}</p>
+                        <p class="card-text">Автор:{{ photo.created }}</p>
+                        <p class="card-text">Дата создания:{{ photo.date_ct }}
+                        <a href="{% url "webapp:photo_detail" photo.pk %}"
+                           class="btn btn-primary">Посмотреть</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

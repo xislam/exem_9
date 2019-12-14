@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}{{ photo.created }}{% endblock %}
+{% block content %}
+    <div class="text-center">
+        <div class="row">
+            <div class="col col-12 col-sm-10 col-md-8 col-lg-6 m-auto">
+                <img src="{{ photo.img.url }}" class="img-fluid" alt="#">
+            </div>
+        </div>
+        <p class="card-text">Подпись:{{ photo.subscription }}</p>
+        <p class="card-text">Автор:{{ photo.created }}</p>
+        <p class="card-text">Дата создания:{{ photo.date_ct }}
+        <p><a href="{% url 'webapp:photo_update' photo.pk %}" class="btn btn-primary">Изменить</a></p>
+        <p><a href="{% url 'webapp:photo_delete' photo.pk %}" class="btn btn-danger">Удолить</a></p>
+    </div>
+
+    <h1>Comments:</h1>
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+    {% for comment in comments %}
+        <div class="comment">
+            <p>To photo: <a href="{% url 'webapp:photo_detail' comment.photo.id %}">{{ comment.photo }}</a></p>
+            <p>{{ comment.author }} commented at {{ comment.created_at|date:'d.m.Y H:i:s' }}</p>
+            <div class="pre">{{ comment.text }}</div>
+            {% if comment.photo.is_active %}
+                <p class="comment-links">
+                    <a href="{% url 'webapp:comment_update' comment.pk %}">Edit</a>
+                    <a href="{% url 'webapp:comment_delete' comment.pk %}">Delete</a>
+                </p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+
+{% endblock %}
