@@ -17,8 +17,7 @@ class Photo (models.Model):
 
 
 class Comment(models.Model):
-    photo = models.ForeignKey('Photo', on_delete=models.CASCADE, verbose_name='Коментарии', related_name='comment_photo')
-    text = models.TextField(max_length=3000, null=True, blank=True, verbose_name='Тецт')
+    text = models.TextField(max_length=3000, null=True, blank=True, verbose_name='Текст')
     images = models.ForeignKey(Photo, verbose_name='Фото', on_delete=models.PROTECT, related_name='img_comment')
     created_by = models.ForeignKey(User, default=get_admin, verbose_name='Автор', on_delete=models.PROTECT, related_name='img_comment')
     date_ct = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')

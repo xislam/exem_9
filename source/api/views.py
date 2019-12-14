@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from api.serializers import CommentSerializer
-from webapp.models import Comment
+from webapp.models import Comment, Photo
 
 
 class LogoutView(APIView):
@@ -29,14 +29,18 @@ class CommentViewSet(ModelViewSet):
 
     @action(methods=['post'], detail=True)
     def rate_up(self, request, pk=None):
-        quote = self.get_object()
-        quote.rating += 1
-        quote.save()
-        return Response({'id': quote.pk, 'rating': quote.rating})
+        photo_pk = request.data.get('photo')
+        img = Photo.objects.get(pk=photo_pk)
+        if self.queryset.filter(photo=img):
+            return Response({'error': 'You have already liked it'}, status=400)
+        img.likenum += 1
+        img.save()
 
     @action(methods=['post'], detail=True)
     def rate_down(self, request, pk=None):
-        quote = self.get_object()
-        quote.rating -= 1
-        quote.save()
-        return Response({'id': quote.pk, 'rating': quote.rating})
+        photo_pk = request.data.get('photo')
+        img = Photo.objects.get(pk=photo_pk)
+        if self.queryset.filter(photo=img):
+            return Response({'error': 'No let likes '}, status=400)
+        img.likenum -= 1
+        img.save()
