@@ -13,9 +13,22 @@
                     <div class="card-body">
                         <p class="card-text">Подпись:{{ photo.subscription }}</p>
                         <p class="card-text">Автор:{{ photo.created }}</p>
-                        <p class="card-text">Дата создания:{{ photo.date_ct }}
+                        <p class="card-text">Дата создания:{{ photo.date_ct }}</p>
+                        <p class="card-text" id="like_{{ photo.id }}">Лайки: <span id="like_span_{{ photo.id }}">{{ photo.like }}</span></p>
+                        <ul>
+                            <li data-id="{{ like_obj.id }}" data-type="img" data-action="like" onclick="like({{ photo.id }})" title="Нравится">
+                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                                <span data-count="like">{{ like_obj.votes.likes.count }}</span>
+                            </li>
+                            <li data-id="{{ like_obj.id }}" data-type="img" data-action="dislike"
+                                title="Не нравится">
+                                <span class="glyphicon glyphicon-thumbs-down"></span>
+                                <span data-count="dislike">{{ like_obj.votes.dislikes.count }}</span>
+                            </li>
+                        </ul>
                         <a href="{% url "webapp:photo_detail" photo.pk %}"
                            class="btn btn-primary">Посмотреть</a>
+{#                        <button id="{{ photo.pk }}" onclick="{{ photo.id }}">like</button>#}
                     </div>
                 </div>
             </div>

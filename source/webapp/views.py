@@ -1,16 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.shortcuts import reverse, redirect, get_object_or_404
-
+from django.shortcuts import reverse, get_object_or_404
 from webapp.forms import PhotoCommentForm, CommentForm
-from webapp.mixins import StatsMixin
 from webapp.models import Photo, Comment
 
 
-class IndexView(StatsMixin, ListView):
+
+class IndexView(ListView):
     model = Photo
     template_name = 'index.html'
 
@@ -18,12 +15,12 @@ class IndexView(StatsMixin, ListView):
         return Photo.objects.order_by('-created')
 
 
-class PhotoView(StatsMixin, DetailView):
+class PhotoView(DetailView):
     model = Photo
     template_name = 'photo_detail.html'
 
 
-class PhotoCreateView(PermissionRequiredMixin, StatsMixin, CreateView):
+class PhotoCreateView(PermissionRequiredMixin, CreateView):
     model = Photo
     template_name = 'photo_create.html'
     fields = ('img', 'subscription', 'created')
@@ -34,7 +31,7 @@ class PhotoCreateView(PermissionRequiredMixin, StatsMixin, CreateView):
         return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
 
 
-class PhotoUpdateView(LoginRequiredMixin, StatsMixin, UpdateView):
+class PhotoUpdateView(LoginRequiredMixin, UpdateView):
     model = Photo
     template_name = 'photo_update.html'
     fields = ('img', 'subscription', 'created')
@@ -44,7 +41,7 @@ class PhotoUpdateView(LoginRequiredMixin, StatsMixin, UpdateView):
         return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
 
 
-class PhotoDeleteView(LoginRequiredMixin, StatsMixin, DeleteView):
+class PhotoDeleteView(LoginRequiredMixin, DeleteView):
     model = Photo
     template_name = 'photo_delete.html'
     success_url = reverse_lazy('webapp:index')
@@ -86,3 +83,5 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('webapp:photo_detail', kwargs={'pk': self.object.photo.pk})
+
+
